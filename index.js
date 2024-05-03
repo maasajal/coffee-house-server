@@ -48,6 +48,31 @@ const run = async () => {
       res.send(result);
     });
 
+    app.put("/coffee/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log("Update Coffee", id);
+      const coffee = req.body;
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateCoffee = {
+        $set: {
+          name: coffee.name,
+          chef: coffee.chef,
+          price: coffee.price,
+          taste: coffee.taste,
+          category: coffee.category,
+          details: coffee.details,
+          photo: coffee.photo,
+        },
+      };
+      const result = await coffeeCollection.updateOne(
+        query,
+        updateCoffee,
+        options
+      );
+      res.send(result);
+    });
+
     app.delete("/coffee/:id", async (req, res) => {
       const id = req.params.id;
       console.log("Deleted Coffee", id);
